@@ -9,15 +9,20 @@
   (q/color-mode :hsb)
   ; setup function returns initial state. It contains
   ; circle color and position.
-  {:color 0
-   :angle 0
+  {:direction 1
    :t-norm 0})
+
+;; it is fun to just let t increase forever :)
 
 (defn update-state [state]
   ; Update sketch state by changing circle color and position.
-  {:color (mod (+ (:color state) 0.7) 255)
-   :angle (+ (:angle state) 0.1)
-   :t-norm (mod (+ (:t-norm state) 0.01) 1)})
+  {:direction (if (>= (:t-norm state) 1)
+                -1
+                (if (<= (:t-norm state) 0)
+                  1
+                  (:direction state)))
+   :t-norm (+ (:t-norm state)
+              (* (:direction state) 0.01))})
 
 (defn draw-state [state]
   ; Clear the sketch by filling it with light-grey color.
@@ -34,8 +39,8 @@
         left-endpoint-x (- center-x (/ circumference 2))
         line-y (+ center-y radius)
         n-dots 360]
-    #_(q/ellipse center-x center-y diameter diameter)
-    #_(q/line left-endpoint-x line-y
+    (q/ellipse center-x center-y diameter diameter)
+    (q/line left-endpoint-x line-y
             (+ left-endpoint-x circumference) line-y)
 
     (q/no-fill)

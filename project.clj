@@ -17,4 +17,9 @@
               :output-dir "out"
               :main "unfurl_circle.core"
               :optimizations :none
-              :pretty-print true}}]})
+              :pretty-print true}}
+            {:id "min"
+             :source-paths ["src"]
+             :compiler 
+             {:output-to "js/min.js"
+              :optimizations :advanced}}]})
